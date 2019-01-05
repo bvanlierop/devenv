@@ -1,0 +1,5 @@
+TODO:
+
+Configure ssh for git(hub)
+Test scripts on virtual box
+Fix posh-git with ConsoleZ plus colouring
