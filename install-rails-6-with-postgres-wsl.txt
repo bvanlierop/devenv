@@ -1,0 +1,65 @@
+# 
+# Ruby on Rails installation steps: 
+# 
+sudo apt install -y curl 
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - 
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - 
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list 
+sudo apt-get update 
+sudo apt-get install -y git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev nodejs yarn libpq-dev 
+cd git clone https://github.com/rbenv/rbenv.git ~/.rbenv 
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc 
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc 
+exec $SHELL 
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build 
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc 
+exec $SHELL 
+rbenv install 2.7.1 
+rbenv global 2.7.1 
+ruby -v 
+gem install bundler 
+git config --global color.ui true 
+git config --global user.name "MY_NAME" 
+git config --global user.email "MY_PERSONAL_EMAIL" 
+ssh-keygen -t rsa -b 4096 -C "MY_PERSONAL_EMAIL" 
+cat ~/.ssh/id_rsa.pub 
+
+# Copy / paste ssh content in Github ssh settings 
+ssh -T git@github.com 
+gem install rails -v 6.0.2.2 
+rails -v 
+
+# 
+# Install database (Postgresql); 
+# 
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
+echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list 
+sudo apt-get update 
+sudo apt-get install postgresql-12 postgresql-client-12 -y 
+pg_lsclusters 
+sudo pg_ctlcluster 12 main start 
+pg_lsclusters sudo -u postgres 
+# We are now going to create a test user for our test-database
+createuser MY_USER_NAME -s sudo -u postgres psql          
+# When prompted with psql console, type: \password MY_USER_NAME 
+# Type in new password 
+quit 
+sudo update-rc.d postgresql enable 
+
+# 
+# Heroku environment setup 
+# 
+curl https://cli-assets.heroku.com/install.sh | sh 
+# show heroku version to see if its correctly installed 
+heroku --version 
+## Add git remotes
+git remote add staging https://git.heroku.com/XXXXXXXXXXXX
+git remote add production https://git.heroku.com/YYYYYYYYYYYYYYY
+git remote -v 
+#should show something like this:
+origin		git@github.com:ZZZZZZZZZZZZZZZZZZ (fetch)
+origin		git@github.com:ZZZZZZZZZZZZZZZZZZ (push)
+production	https://git.heroku.com/XXXXXXXXXXXX (fetch)
+production	https://git.heroku.com/YYYYYYYYYYYYYYY (push)
+staging		https://git.heroku.com/XXXXXXXXXXXX (fetch)
+staging		https://git.heroku.com/YYYYYYYYYYYYYYY (push)
